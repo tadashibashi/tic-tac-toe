@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "module": "ES2015",
+        "target": "ES5",
+        "preserveConstEnums": true,
+        "sourceMap": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+}
