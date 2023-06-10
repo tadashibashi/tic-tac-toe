@@ -1,15 +1,34 @@
+
 export enum Symbol {
     Null=0,
     X,
-    O
+    O,
+    COUNT
+}
+
+export enum BoardResult {
+    None,
+    X,
+    O,
+    Cats,
+    COUNT
 }
 
 export class Board {
     private rows: Symbol[][];
 
-    public constructor() {
-        this.reset();
-    }   
+    public constructor(rows?: Symbol[][]) {
+        if (rows) {
+            this.rows = [];
+            rows.forEach(row => this.rows.push([...row]));
+        } else {
+            this.reset();
+        }
+    }
+    
+    public copy(): Board {
+        return new Board(this.rows);
+    }
 
     public reset() {
         this.rows = [
@@ -27,7 +46,18 @@ export class Board {
         return this.rows[row][col];
     }
 
-    public checkWin(sym: Symbol): boolean {
+    public checkWin(): BoardResult {
+        if (this.__checkWin(Symbol.X))
+            return BoardResult.X;
+        else if (this.__checkWin(Symbol.O))
+            return BoardResult.O;
+        else if (this.__boardFull())
+            return BoardResult.Cats;
+        else
+            return BoardResult.None;
+    }
+
+    private __checkWin(sym: Symbol) {
         // Check rows
         for (let row = 0; row < this.rows.length; ++row) {
 
@@ -78,4 +108,15 @@ export class Board {
         
         return didWin;
     }
+
+    private __boardFull(): boolean {
+        for (let row = 0; row < this.rows.length; ++row) {
+            for (let col = 0; col < this.rows[row].length; ++col)
+                if (this.rows[row][col] === Symbol.Null)
+                    return false;
+        }
+
+        return true;
+    }
 }
+
