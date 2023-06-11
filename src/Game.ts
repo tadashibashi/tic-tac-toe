@@ -40,7 +40,7 @@ export class Game {
         // initialize html elements
         const boardEl = document.getElementById("board");
         const displayEl = document.getElementById("display");
-
+        const resetBtnEl = document.getElementById("reset-btn");
         // connect listeners to objects
         boardEl.addEventListener("click", (evt) => {
             const target = evt.target as HTMLElement;
@@ -60,6 +60,13 @@ export class Game {
                         this.mState === GameState.P1Turn ? Sym.O : Sym.X);
                     break;
             }
+        });
+
+        resetBtnEl.addEventListener("click", evt => {
+            //const target = evt.target as HTMLButtonElement;
+
+            this.mState = GameState.P1Turn;
+            this.mView.reset();
         });
 
         // create view

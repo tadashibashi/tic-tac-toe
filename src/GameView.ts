@@ -68,6 +68,12 @@ function gameReducer(action: GameAction, data: any, lastState: GameState): GameS
                 message
             }
         }
+        case GameAction.Reset: {
+            return {
+                board: new Board(),
+                message: "Player O's Turn"
+            }
+        }
         default:
             return lastState;
     }
@@ -101,6 +107,10 @@ export class GameView extends View<GameProps, GameState, GameAction> {
         this.reducer(GameAction.SetWinner, sym);
     }
 
+    reset() {
+        this.reducer(GameAction.Reset, null);
+    }
+
     public render() {
         this.props.displayEl.innerText = this.state.message;
 
@@ -116,6 +126,8 @@ export class GameView extends View<GameProps, GameState, GameAction> {
                     case Sym.X:
                         square.innerText = "X";
                         break;
+                    case Sym.Null:
+                        square.innerText = "";
                 }
             }
         });

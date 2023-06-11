@@ -50,7 +50,6 @@ export class Board {
     }
 
     public spaceEmpty(row: number, col: number) {
-        console.log(row, col);
         return this.rows[row][col] === Sym.Null;
     }
 
