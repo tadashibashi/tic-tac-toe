@@ -1,10 +1,10 @@
-import { Board, BoardResult, Symbol } from "../src/Board";
+import { Board, BoardResult, Sym } from "../src/Board";
 
 test("Board checkWin: horizontal, row 0", () => {
     const board = new Board([
-        [Symbol.O, Symbol.O, Symbol.O],
-        [Symbol.Null, Symbol.Null, Symbol.Null],
-        [Symbol.Null, Symbol.Null, Symbol.Null],
+        [Sym.O, Sym.O, Sym.O],
+        [Sym.Null, Sym.Null, Sym.Null],
+        [Sym.Null, Sym.Null, Sym.Null],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -12,9 +12,9 @@ test("Board checkWin: horizontal, row 0", () => {
 
 test("Board checkWin: horizontal, row 1", () => {
     const board = new Board([
-        [Symbol.Null, Symbol.Null, Symbol.Null],
-        [Symbol.O, Symbol.O, Symbol.O],
-        [Symbol.Null, Symbol.Null, Symbol.Null],
+        [Sym.Null, Sym.Null, Sym.Null],
+        [Sym.O, Sym.O, Sym.O],
+        [Sym.Null, Sym.Null, Sym.Null],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -22,9 +22,9 @@ test("Board checkWin: horizontal, row 1", () => {
 
 test("Board checkWin: horizontal, row 2", () => {
     const board = new Board([
-        [Symbol.Null, Symbol.Null, Symbol.Null],
-        [Symbol.Null, Symbol.Null, Symbol.Null],
-        [Symbol.O, Symbol.O, Symbol.O],
+        [Sym.Null, Sym.Null, Sym.Null],
+        [Sym.Null, Sym.Null, Sym.Null],
+        [Sym.O, Sym.O, Sym.O],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -32,9 +32,9 @@ test("Board checkWin: horizontal, row 2", () => {
 
 test("Board checkWin: vertical, col 0", () => {
     const board = new Board([
-        [Symbol.O, Symbol.Null, Symbol.Null],
-        [Symbol.O, Symbol.Null, Symbol.Null],
-        [Symbol.O, Symbol.Null, Symbol.Null],
+        [Sym.O, Sym.Null, Sym.Null],
+        [Sym.O, Sym.Null, Sym.Null],
+        [Sym.O, Sym.Null, Sym.Null],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -42,9 +42,9 @@ test("Board checkWin: vertical, col 0", () => {
 
 test("Board checkWin: vertical, col 1", () => {
     const board = new Board([
-        [Symbol.Null, Symbol.O, Symbol.Null],
-        [Symbol.Null, Symbol.O, Symbol.Null],
-        [Symbol.Null, Symbol.O, Symbol.Null],
+        [Sym.Null, Sym.O, Sym.Null],
+        [Sym.Null, Sym.O, Sym.Null],
+        [Sym.Null, Sym.O, Sym.Null],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -52,9 +52,9 @@ test("Board checkWin: vertical, col 1", () => {
 
 test("Board checkWin: vertical, col 2", () => {
     const board = new Board([
-        [Symbol.Null, Symbol.Null, Symbol.O],
-        [Symbol.Null, Symbol.Null, Symbol.O],
-        [Symbol.Null, Symbol.Null, Symbol.O],
+        [Sym.Null, Sym.Null, Sym.O],
+        [Sym.Null, Sym.Null, Sym.O],
+        [Sym.Null, Sym.Null, Sym.O],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -62,9 +62,9 @@ test("Board checkWin: vertical, col 2", () => {
 
 test("Board checkWin: cross tl-br", () => {
     const board = new Board([
-        [Symbol.O, Symbol.Null, Symbol.Null],
-        [Symbol.Null, Symbol.O, Symbol.Null],
-        [Symbol.Null, Symbol.Null, Symbol.O],
+        [Sym.O, Sym.Null, Sym.Null],
+        [Sym.Null, Sym.O, Sym.Null],
+        [Sym.Null, Sym.Null, Sym.O],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -72,9 +72,9 @@ test("Board checkWin: cross tl-br", () => {
 
 test("Board checkWin: cross bl-tr", () => {
     const board = new Board([
-        [Symbol.Null, Symbol.Null, Symbol.O,],
-        [Symbol.Null, Symbol.O, Symbol.Null],
-        [Symbol.O, Symbol.Null, Symbol.Null],
+        [Sym.Null, Sym.Null, Sym.O,],
+        [Sym.Null, Sym.O, Sym.Null],
+        [Sym.O, Sym.Null, Sym.Null],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -82,9 +82,9 @@ test("Board checkWin: cross bl-tr", () => {
 
 test("Board checkWin: diff symbols", () => {
     const board = new Board([
-        [Symbol.Null, Symbol.Null, Symbol.X],
-        [Symbol.Null, Symbol.O, Symbol.Null],
-        [Symbol.X, Symbol.Null, Symbol.Null],
+        [Sym.Null, Sym.Null, Sym.X],
+        [Sym.Null, Sym.O, Sym.Null],
+        [Sym.X, Sym.Null, Sym.Null],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.None);
@@ -92,9 +92,9 @@ test("Board checkWin: diff symbols", () => {
 
 test("Board checkWin: diff symbols w/ null", () => {
     const board = new Board([
-        [Symbol.Null, Symbol.Null, Symbol.X],
-        [Symbol.Null, Symbol.O, Symbol.Null],
-        [Symbol.Null, Symbol.Null, Symbol.Null],
+        [Sym.Null, Sym.Null, Sym.X],
+        [Sym.Null, Sym.O, Sym.Null],
+        [Sym.Null, Sym.Null, Sym.Null],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.None);
@@ -102,9 +102,9 @@ test("Board checkWin: diff symbols w/ null", () => {
 
 test("Board checkWin: cats game 1", () => {
     const board = new Board([
-        [Symbol.O, Symbol.X, Symbol.X],
-        [Symbol.X, Symbol.O, Symbol.O],
-        [Symbol.O, Symbol.O, Symbol.X],
+        [Sym.O, Sym.X, Sym.X],
+        [Sym.X, Sym.O, Sym.O],
+        [Sym.O, Sym.O, Sym.X],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.Cats);
@@ -112,9 +112,9 @@ test("Board checkWin: cats game 1", () => {
 
 test("Board checkWin: cats game 2", () => {
     const board = new Board([
-        [Symbol.X, Symbol.O, Symbol.X],
-        [Symbol.O, Symbol.X, Symbol.O],
-        [Symbol.O, Symbol.X, Symbol.O],
+        [Sym.X, Sym.O, Sym.X],
+        [Sym.O, Sym.X, Sym.O],
+        [Sym.O, Sym.X, Sym.O],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.Cats);
@@ -122,9 +122,9 @@ test("Board checkWin: cats game 2", () => {
 
 test("Board checkWin: cats game 3", () => {
     const board = new Board([
-        [Symbol.O, Symbol.O, Symbol.X],
-        [Symbol.X, Symbol.X, Symbol.O],
-        [Symbol.O, Symbol.O, Symbol.X],
+        [Sym.O, Sym.O, Sym.X],
+        [Sym.X, Sym.X, Sym.O],
+        [Sym.O, Sym.O, Sym.X],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.Cats);
@@ -132,9 +132,9 @@ test("Board checkWin: cats game 3", () => {
 
 test("Board checkWin: almost cats", () => {
     const board = new Board([
-        [Symbol.Null, Symbol.O, Symbol.X],
-        [Symbol.X, Symbol.X, Symbol.O],
-        [Symbol.O, Symbol.O, Symbol.X],
+        [Sym.Null, Sym.O, Sym.X],
+        [Sym.X, Sym.X, Sym.O],
+        [Sym.O, Sym.O, Sym.X],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.None);
@@ -142,9 +142,9 @@ test("Board checkWin: almost cats", () => {
 
 test("Board checkWin: O wins, full board", () => {
     const board = new Board([
-        [Symbol.O, Symbol.O, Symbol.O],
-        [Symbol.X, Symbol.X, Symbol.O],
-        [Symbol.O, Symbol.O, Symbol.X],
+        [Sym.O, Sym.O, Sym.O],
+        [Sym.X, Sym.X, Sym.O],
+        [Sym.O, Sym.O, Sym.X],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.O);
@@ -152,9 +152,9 @@ test("Board checkWin: O wins, full board", () => {
 
 test("Board checkWin: X wins, full board", () => {
     const board = new Board([
-        [Symbol.X, Symbol.O, Symbol.X],
-        [Symbol.X, Symbol.X, Symbol.O],
-        [Symbol.O, Symbol.O, Symbol.X],
+        [Sym.X, Sym.O, Sym.X],
+        [Sym.X, Sym.X, Sym.O],
+        [Sym.O, Sym.O, Sym.X],
     ]);
 
     expect(board.checkWin()).toBe(BoardResult.X);

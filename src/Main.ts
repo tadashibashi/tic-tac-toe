@@ -1,7 +1,5 @@
-import { Board, Symbol } from "./Board";
-import { GameView } from "./GameView";
+import { Game } from "./Game";
 
 window.onload = function() {
-    const game = new GameView();
-    
+    new Game().run();
 }

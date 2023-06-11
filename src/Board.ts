@@ -1,23 +1,30 @@
-
-export enum Symbol {
+/**
+ * Symbol representing player id
+ */
+export enum Sym {
     Null=0,
     X,
     O,
-    COUNT
 }
 
+/**
+ * When checking who won, represents the result
+ */
 export enum BoardResult {
-    None,
+    // No one has won
+    None=0,
+    // Player 'X' won
     X,
+    // Player 'O' won
     O,
+    // Cats game, draw
     Cats,
-    COUNT
 }
 
 export class Board {
-    private rows: Symbol[][];
+    private rows: Sym[][];
 
-    public constructor(rows?: Symbol[][]) {
+    public constructor(rows?: Sym[][]) {
         if (rows) {
             this.rows = [];
             rows.forEach(row => this.rows.push([...row]));
@@ -32,32 +39,56 @@ export class Board {
 
     public reset() {
         this.rows = [
-            [Symbol.Null, Symbol.Null, Symbol.Null],
-            [Symbol.Null, Symbol.Null, Symbol.Null],
-            [Symbol.Null, Symbol.Null, Symbol.Null]
+            [Sym.Null, Sym.Null, Sym.Null],
+            [Sym.Null, Sym.Null, Sym.Null],
+            [Sym.Null, Sym.Null, Sym.Null]
         ];
     }
 
-    public set(row: number, col: number, sym: Symbol): void {
+    public forEachRow(cb: (row: Sym[], i?: number) => any) {
+        this.rows.forEach(cb);
+    }
+
+    public spaceEmpty(row: number, col: number) {
+        console.log(row, col);
+        return this.rows[row][col] === Sym.Null;
+    }
+
+    public set(row: number, col: number, sym: Sym): void {
         this.rows[row][col] = sym;
     }
 
-    public get(row: number, col: number): Symbol {
+    public get(row: number, col: number): Sym {
         return this.rows[row][col];
     }
 
-    public checkWin(): BoardResult {
-        if (this.__checkWin(Symbol.X))
-            return BoardResult.X;
-        else if (this.__checkWin(Symbol.O))
-            return BoardResult.O;
-        else if (this.__boardFull())
-            return BoardResult.Cats;
-        else
-            return BoardResult.None;
+    /**
+     * Check to see game win status.
+     * @param sym {Sym?} optional: specific symbol to check for
+     */
+    public checkWin(sym?: Sym): BoardResult {
+        if (sym) {
+            if (this.__checkWin(sym)) {
+                return sym === Sym.O ? BoardResult.O : BoardResult.X;
+            } else if (this.__boardFull()) {
+                return BoardResult.Cats;
+            } else {
+                return BoardResult.None;
+            }
+        } else {
+            if (this.__checkWin(Sym.X))
+                return BoardResult.X;
+            else if (this.__checkWin(Sym.O))
+                return BoardResult.O;
+            else if (this.__boardFull())
+                return BoardResult.Cats;
+            else
+                return BoardResult.None;
+        }
+
     }
 
-    private __checkWin(sym: Symbol) {
+    private __checkWin(sym: Sym) {
         // Check rows
         for (let row = 0; row < this.rows.length; ++row) {
 
@@ -112,7 +143,7 @@ export class Board {
     private __boardFull(): boolean {
         for (let row = 0; row < this.rows.length; ++row) {
             for (let col = 0; col < this.rows[row].length; ++col)
-                if (this.rows[row][col] === Symbol.Null)
+                if (this.rows[row][col] === Sym.Null)
                     return false;
         }
 
