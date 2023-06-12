@@ -65,30 +65,36 @@ export class Board {
      * Check to see game win status.
      * @param sym {Sym?} optional: specific symbol to check for
      */
-    public checkWin(sym?: Sym): BoardResult {
+    public checkWin(sym?: Sym): {result: BoardResult, squares?: {row: number, col: number}[]} {
         if (sym) {
-            if (this.__checkWin(sym)) {
-                return sym === Sym.O ? BoardResult.O : BoardResult.X;
+            const result = this.__checkWin(sym);
+            if (result.didWin) {
+                return {
+                    result: sym === Sym.O ? BoardResult.O : BoardResult.X,
+                    squares: result.squares
+                };
             } else if (this.__boardFull()) {
-                return BoardResult.Cats;
+                return {result: BoardResult.Cats};
             } else {
-                return BoardResult.None;
+                return {result: BoardResult.None};
             }
         } else {
-            if (this.__checkWin(Sym.X))
-                return BoardResult.X;
-            else if (this.__checkWin(Sym.O))
-                return BoardResult.O;
+            let result;
+            if ((result = this.__checkWin(Sym.X)))
+                return {result: BoardResult.X, squares: result.squares};
+            else if ((result = this.__checkWin(Sym.O)))
+                return {result: BoardResult.O, squares: result.squares};
             else if (this.__boardFull())
-                return BoardResult.Cats;
+                return {result: BoardResult.Cats};
             else
-                return BoardResult.None;
+                return {result: BoardResult.None};
         }
 
     }
 
-    private __checkWin(sym: Sym) {
+    private __checkWin(sym: Sym): {didWin: boolean, squares?: {row: number, col: number}[] } {
         // Check rows
+        const squares = [{row: -1, col: -1}, {row: -1, col: -1}, {row: -1, col: -1}];
         for (let row = 0; row < this.rows.length; ++row) {
 
             let didWin = true;
@@ -97,9 +103,10 @@ export class Board {
                     didWin = false;
                     break;
                 }
+                squares[col] = {row, col};
             }
 
-            if (didWin) return true;
+            if (didWin) return {squares, didWin};
         }
 
         // Check cols
@@ -111,9 +118,10 @@ export class Board {
                     didWin = false;
                     break;
                 }
+                squares[row] = {row, col};
             }
 
-            if (didWin) return true;
+            if (didWin) return {squares, didWin};
         }
 
         // Check diag 
@@ -124,8 +132,9 @@ export class Board {
                 didWin = false;
                 break;
             }
+            squares[i] = {row: i, col: i};
         }
-        if (didWin) return true;
+        if (didWin) return {squares, didWin};
 
         // Top-left to bottom-right
         didWin = true;
@@ -134,9 +143,10 @@ export class Board {
                 didWin = false;
                 break;
             }
+            squares[i] = {row: this.rows.length-1-i, col: i};
         }
         
-        return didWin;
+        return {didWin, squares};
     }
 
     private __boardFull(): boolean {

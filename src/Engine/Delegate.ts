@@ -5,6 +5,10 @@ interface Callback<Args extends any[]> {
 }
 
 
+/**
+ * Class that stores and invokes callback. Similar to the subject in the Observer pattern.
+ * Can store 'this' context, if needed, e.g. class function performed on an instance.
+ */
 export class Delegate<Args extends any[]> {
     private callbacks: Callback<Args>[];
 

@@ -6,6 +6,7 @@ export abstract class View<M extends Model<any, any, any>> {
     protected constructor(model: M) {
         this.model = model;
         model.statechange.addListener(this.render, this);
+        this.render(model, true);
     }
 
     // Render to the DOM

@@ -59,8 +59,8 @@ export class GameModel extends Model<GameState, GameProps, GameAction> {
         this.reducer(GameAction.SetMessage, message, true);
     }
 
-    setWinner(sym: Sym) {
-        this.reducer(GameAction.SetWinner, sym, true);
+    setWinner(data:{sym: Sym, squares?: {row: number, col: number}[]}) {
+        this.reducer(GameAction.SetWinner, data, true);
     }
 
     reset() {
@@ -102,27 +102,51 @@ export class GameModel extends Model<GameState, GameProps, GameAction> {
 
 
             case GameAction.SetWinner: {
-                let message;
-                switch(data) {
+                let message, color;
+                switch(data.sym) {
                     case Sym.O:
                         message = "Player O Won!";
+                        color = "green";
                         break;
                     case Sym.X:
                         message = "Player X Won!";
+                        color = "red";
                         break;
                     case Sym.Null:
                         message = "Cats Game!";
+                        color = "gray";
                         break;
                 }
+
+                if (data.sym === Sym.Null) {
+                    for (let i = 0; i < 9; ++i) {
+                        const sqEl = this.props.boardEl.children[i] as HTMLElement;
+                        sqEl.style.background = color;
+                        console.log(color);
+                    }
+                } else {
+                    if (data.squares) {
+                        data.squares.forEach(sq => {
+                            const sqEl = this.props.boardEl.children[sq.row * 3 + sq.col] as HTMLElement;
+                            sqEl.style.background = color;
+                        });
+                    }
+                }
+
                 return {
                     board: lastState.board.copy(),
                     message,
                     gameState: State.Result
-                }
+                };
             }
 
 
             case GameAction.Reset: {
+                for (let i = 0; i < 9; ++i) {
+                    const sqEl = this.props.boardEl.children[i] as HTMLElement;
+                    sqEl.style.background = "white";
+                }
+
                 return {
                     board: new Board(),
                     message: "Player O's Turn",
