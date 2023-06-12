@@ -6,20 +6,24 @@ html {
     font-family: 'Major Mono Display', monospace;
 }
 
+/* Tic-Tac-Toe Title */
 h1 {
     font-size: 5vmin;
     text-align: center;
+
     user-select: none;
 }
 
+/* Text display above the board */
 #display {
+    font-family: monospace;
     font-size: 3vmin;
     text-align: center;
-    user-select: none;
 
-    font-family: monospace;
+    user-select: none;
 }
 
+/* Parent of inner squares */
 #board {
     display: flex;
     flex-flow: row wrap;
@@ -27,7 +31,6 @@ h1 {
     align-content: center;
 
     margin: auto;
-
     padding: 2px;
 
     width: 50vmin;
@@ -53,40 +56,32 @@ h1 {
     animation: .5s ease pop-in;
 }
 
+/* Inner squares */
 #board > div {
-    width: 33%;
-    aspect-ratio : 1 / 1;
-    border: 1px solid black;
-
-    text-align: center;
-
-    user-select: none;
-
     display: flex;
     justify-content: center;
     align-items: center;
 
     font-size: 8vmin;
+    text-align: center;
+
+    width: 33%;
+    aspect-ratio : 1 / 1;
+
+    border: 1px solid black;
+
+    user-select: none;
 
     transition: 1s background;
 }
 
-#board > div:nth-of-type(3n) {
-    grid-column: 1;
-}
-
-#board > div:nth-of-type(3n + 1) {
-    grid-column: 2;
-}
-
-#board > div:nth-of-type(3n + 2) {
-    grid-column: 3;
-}
-
+/* Bottom button */
 #reset-btn {
     display: block;
+
     font-family: monospace;
     font-size: max(2vmin, 12px);
+
     width: 16vmin;
     margin: 10px auto;
 }

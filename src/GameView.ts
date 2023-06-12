@@ -1,4 +1,4 @@
-import { Board, Sym } from "./Board";
+import { Sym } from "./Board";
 import { View } from "./Engine/View";
 import {GameModel} from "./GameModel";
 

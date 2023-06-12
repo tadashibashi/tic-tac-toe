@@ -122,7 +122,6 @@ export class GameModel extends Model<GameState, GameProps, GameAction> {
                     for (let i = 0; i < 9; ++i) {
                         const sqEl = this.props.boardEl.children[i] as HTMLElement;
                         sqEl.style.background = color;
-                        console.log(color);
                     }
                 } else {
                     if (data.squares) {
