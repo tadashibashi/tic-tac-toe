@@ -66,6 +66,7 @@ export class Board {
      * @param sym {Sym?} optional: specific symbol to check for
      */
     public checkWin(sym?: Sym): {result: BoardResult, squares?: {row: number, col: number}[]} {
+
         if (sym) {
             const result = this.__checkWin(sym);
             if (result.didWin) {
@@ -136,7 +137,7 @@ export class Board {
         }
         if (didWin) return {squares, didWin};
 
-        // Top-left to bottom-right
+        // Bottom-left to top-right
         didWin = true;
         for (let i = 0; i < this.rows.length; ++i) {
             if (this.rows[this.rows.length-1-i][i] !== sym) {

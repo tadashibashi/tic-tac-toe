@@ -28,8 +28,8 @@ export class Delegate<Args extends any[]> {
     removeListener(callback: (...args: Args) => void, context: any = null) {
         for (let i = 0; i < this.callbacks.length; ++i) {
             if (Object.is(this.callbacks[i].callback, callback) &&
-                Object.is(this.callbacks[i].context, context)) {
-                delete this.callbacks[i];
+                (context ? Object.is(this.callbacks[i].context, context) : true)) {
+                this.callbacks.splice(i, 1);
                 return true;
             }
         }
