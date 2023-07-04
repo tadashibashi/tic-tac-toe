@@ -120,11 +120,10 @@ export class GameController {
                     break;
                 case State.P1Turn:
                 case State.P2Turn:
-                    target.classList.add("pop-in");
-
                     if (gameState === State.P2Turn && this.model.props.computerP2) { // computer move
-
-                    } else {
+                        // do nothing... perhaps write inverse if statement?
+                    } else {                                                         // player move
+                        target.classList.add("pop-in");
                         this.statePlayerTurn(pos.row, pos.col,
                             gameState === State.P1Turn ? Sym.O : Sym.X);
                     }
@@ -145,7 +144,7 @@ export class GameController {
         resetBtnEl.addEventListener("click", evt => {
             //const target = evt.target as HTMLButtonElement;
             this.model.reset();
-            resetBtnEl.innerText = "Reset Game";
+            resetBtnEl.innerText = "Reset";
         });
 
         compSliderEl.addEventListener("input", evt => {
@@ -169,7 +168,7 @@ export class GameController {
         setTimeout(() => {
             if (this.model.state.gameState !== State.P1Turn) {
                 this.model.reset();
-                resetBtnEl.innerText = "Reset Game";
+                resetBtnEl.innerText = "Reset";
             }
         }, 1000);
     }
