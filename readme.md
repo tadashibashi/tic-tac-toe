@@ -4,7 +4,7 @@
 
 A simple game of Tic-tac-toe with optional computer opponent.
 
-The AI may be near-impossible to beat at this time. Varying 
+The AI is at a high difficulty at this time. Varying 
 levels will be implemented at a later time.
 
 A live build can be found 
