@@ -8,7 +8,7 @@ The AI may be near-impossible to beat at this time. Varying
 levels will be implemented at a later time.
 
 A live build can be found 
-[here](https://aaronishibashi.com/portfolio/web/ga/tic-tac-toe).
+[here](https://code.aaronishibashi.com/tic-tac-toe).
 
 ## Tools Used
 
