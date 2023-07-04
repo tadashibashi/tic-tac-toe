@@ -26,7 +26,9 @@ export class GameController {
     computerTimeout: NodeJS.Timeout;
 
 
-    private detectCrossAttack(sym: Sym) {
+    // TODO: Too many magic numbers in here, make consts
+    private detectCrossAttack(sym: Sym): number {
+
         let numPieces = 0;
         const board = this.model.state.board;
 
@@ -37,25 +39,50 @@ export class GameController {
             }
         }
 
-        if (numPieces !== 3) return false;
+        if (numPieces !== 3) return 0;
 
-        // diag top-left, bottom-right
-        if (board.get(0, 0) !== 0 &&
-            board.get(0, 0) !== sym &&
-            board.get(1, 1) === sym &&
-            board.get(2, 2) !== 0 &&
-            board.get(2, 2) !== sym)
-                return true;
+        let isDiagonal = 0;
+        let temp = true;
+        for (let i = 0; i < 3; ++i) {
+            if (this.model.state.board.get(i, i) === 0) {
+                temp = false;
+                break;
+            }
+        }
+        if (temp)
+            isDiagonal = 1;
+        else {
+            temp = true;
+            for (let i = 0; i < 3; ++i) {
+                if (this.model.state.board.get(2-i, i) === 0) {
+                    temp = false;
+                    break;
+                }
+            }
 
-        // diag bottom-left, top-right
-        if (board.get(2, 0) !== 0 &&
-            board.get(2, 0) !== sym &&
-            board.get(1, 1) === sym &&
-            board.get(0, 2) !== 0 &&
-            board.get(0, 2) !== sym)
-            return true;
+            if (temp)
+                isDiagonal = 2;
+        }
 
-        return false;
+        if (isDiagonal === 1) {
+            // diag top-left, bottom-right
+            if (board.get(0, 0) !== 0 &&
+                board.get(0, 0) !== sym &&
+                board.get(1, 1) === sym &&
+                board.get(2, 2) !== 0 &&
+                board.get(2, 2) !== sym)
+                return 1;
+        } else if (isDiagonal === 2) {
+            // diag bottom-left, top-right
+            if (board.get(2, 0) !== 0 &&
+                board.get(2, 0) !== sym &&
+                board.get(1, 1) === sym &&
+                board.get(0, 2) !== 0 &&
+                board.get(0, 2) !== sym)
+                return 1;
+        }
+
+        return isDiagonal ? 2 : 0;
     }
 
     /**
@@ -70,7 +97,8 @@ export class GameController {
         const compMove = board.nextOptimalMove(Sym.X);
 
         // mitigate cross attack
-        if (this.detectCrossAttack(sym)) { // detects if opponent of sym is attacking
+        const crossAttack = this.detectCrossAttack(sym);
+        if (crossAttack === 1) {                  // cross-attack v1, place on sides
             if (board.spaceEmpty(0, 1))
                 return {row: 0, col: 1};
             else if (board.spaceEmpty(1, 0))
@@ -79,6 +107,16 @@ export class GameController {
                 return {row: 2, col: 1};
             else if (board.spaceEmpty(1, 2))
                 return {row: 1, col: 2};
+        } else if (crossAttack === 2) {           // cross-attack v2, place on corners
+            console.log("cross attack v2!");
+            if (board.spaceEmpty(0, 0))
+                return {row: 0, col: 0};
+            else if (board.spaceEmpty(2, 0))
+                return {row: 2, col: 0};
+            else if (board.spaceEmpty(2, 2))
+                return {row: 2, col: 2};
+            else if (board.spaceEmpty(0, 2))
+                return {row: 0, col: 2};
         }
 
         if (sym === Sym.O) { // player, if player going to win, prefer player move
