@@ -267,7 +267,7 @@ test("Board rateCell4", () => {
     expect(board.rateCell(1, 1, 1)).toBe(24);
 });
 
-test("Board rateCell: Edge Case... Not sure how to fix", () => {
+test("Board rateCell5: Edge Case... Not sure how to fix", () => {
     const board = new Board([
         [1, 2, 2],
         [0, 1, 0],

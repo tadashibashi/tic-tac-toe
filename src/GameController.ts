@@ -26,7 +26,15 @@ export class GameController {
     computerTimeout: NodeJS.Timeout;
 
 
-    // TODO: Too many magic numbers in here, make consts
+    /**
+     * A cross attack happens after turn 3, so there should only be 3 pieces on the board,
+     * and in a diagonal formation.
+     * @param sym
+     * @private
+     * @returns 0 for no cross attack,
+     * @returns 1 for diagonal containing alternating pieces e.g.: [x, o, x], or [o, x, o],
+     * @returns 2 for diagonal containing two in a row e.g.: [x, x, o], [o, o, x], etc.
+     */
     private detectCrossAttack(sym: Sym): number {
 
         let numPieces = 0;
@@ -41,6 +49,7 @@ export class GameController {
 
         if (numPieces !== 3) return 0;
 
+        // Diagonal check: 0=no diagonal, 1=top-left to bottom-right, 2=bottom-left to top-right
         let isDiagonal = 0;
         let temp = true;
         for (let i = 0; i < 3; ++i) {
@@ -64,6 +73,7 @@ export class GameController {
                 isDiagonal = 2;
         }
 
+        // Check for cross attack v1
         if (isDiagonal === 1) {
             // diag top-left, bottom-right
             if (board.get(0, 0) !== 0 &&
@@ -82,6 +92,7 @@ export class GameController {
                 return 1;
         }
 
+        // if diagonal and not a v1 cross attack, it is a v2
         return isDiagonal ? 2 : 0;
     }
 
@@ -93,10 +104,7 @@ export class GameController {
     private optimalCell(sym: Sym): GridPoint {
         const board = this.model.state.board;
 
-        const playerMove = board.nextOptimalMove(Sym.O);
-        const compMove = board.nextOptimalMove(Sym.X);
-
-        // mitigate cross attack
+        // check for and mitigate cross attack
         const crossAttack = this.detectCrossAttack(sym);
         if (crossAttack === 1) {                  // cross-attack v1, place on sides
             if (board.spaceEmpty(0, 1))
@@ -119,6 +127,13 @@ export class GameController {
                 return {row: 0, col: 2};
         }
 
+        // get optimal move
+        const playerMove = board.nextOptimalMove(Sym.O);
+        const compMove = board.nextOptimalMove(Sym.X);
+
+        // TODO: there is a special case, see Board.test.ts test "Board rateCell5" where
+        // algorithm fails to choose winning cell, we might need to create a check will win function that returns that
+        // cell first, and then check for optimal move.
         if (sym === Sym.O) { // player, if player going to win, prefer player move
             return playerMove.rating >= compMove.rating ?
                 {row: playerMove.row, col: playerMove.col} :
