@@ -26,12 +26,13 @@ export class GameController {
     computerTimeout: NodeJS.Timeout;
 
 
-    private detectCrossAttack() {
+    private detectCrossAttack(sym: Sym) {
         let numPieces = 0;
+        const board = this.model.state.board;
 
         for (let row = 0; row < 3; ++row) {
             for (let col = 0; col < 3; ++col) {
-                if (this.model.state.board.get(row, col) !== 0)
+                if (board.get(row, col) !== 0)
                     ++numPieces;
             }
         }
@@ -39,26 +40,22 @@ export class GameController {
         if (numPieces !== 3) return false;
 
         // diag top-left, bottom-right
-        let cross = true;
-        for (let i = 0; i < 3; ++i) {
-            if (this.model.state.board.get(i, i) === 0) {
-                cross = false;
-                break;
-            }
-        }
-
-        if (cross) return true;
+        if (board.get(0, 0) !== 0 &&
+            board.get(0, 0) !== sym &&
+            board.get(1, 1) === sym &&
+            board.get(2, 2) !== 0 &&
+            board.get(2, 2) !== sym)
+                return true;
 
         // diag bottom-left, top-right
-        cross = true;
-        for (let i = 0; i < 3; ++i) {
-            if (this.model.state.board.get(2-i, i) === 0) {
-                cross = false;
-                break;
-            }
-        }
+        if (board.get(2, 0) !== 0 &&
+            board.get(2, 0) !== sym &&
+            board.get(1, 1) === sym &&
+            board.get(0, 2) !== 0 &&
+            board.get(0, 2) !== sym)
+            return true;
 
-        return cross;
+        return false;
     }
 
     /**
@@ -73,7 +70,7 @@ export class GameController {
         const compMove = board.nextOptimalMove(Sym.X);
 
         // mitigate cross attack
-        if (this.detectCrossAttack()) {
+        if (this.detectCrossAttack(sym)) { // detects if opponent of sym is attacking
             if (board.spaceEmpty(0, 1))
                 return {row: 0, col: 1};
             else if (board.spaceEmpty(1, 0))
