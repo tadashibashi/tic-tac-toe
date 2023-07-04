@@ -5,7 +5,9 @@ import {Board, Sym} from "./Board";
 interface GameProps {
     boardEl: HTMLElement,
     displayEl: HTMLElement,
-    resetBtnEl: HTMLElement
+    resetBtnEl: HTMLElement,
+    compSliderEl: HTMLInputElement,
+    computerP2: boolean,
 }
 
 
@@ -39,6 +41,8 @@ export class GameModel extends Model<GameState, GameProps, GameAction> {
             boardEl: document.getElementById("board"),
             displayEl: document.getElementById("display"),
             resetBtnEl: document.getElementById("reset-btn"),
+            compSliderEl: document.querySelector(".slider-box input") as HTMLInputElement,
+            computerP2: false,
         };
 
         const state = {

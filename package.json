@@ -11,11 +11,15 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.5.2",
+    "@types/js-cookie": "^3.0.3",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
     "typescript": "^5.1.3",
     "webpack": "^5.86.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.0"
+  },
+  "dependencies": {
+    "js-cookie": "^3.0.5"
   }
 }

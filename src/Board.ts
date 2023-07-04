@@ -61,6 +61,127 @@ export class Board {
         return this.rows[row][col];
     }
 
+    public nextOptimalMove(sym: Sym): {row: number, col: number, rating: number} {
+        let bestRating = -Infinity;
+        let bestCells: {row: number, col: number}[] = [];
+
+        const rows = this.rows.length;
+        const cols = this.rows[0].length;
+
+        for (let row = 0; row < rows; ++row) {
+            for (let col = 0; col < cols; ++col) {
+                const rating = this.rateCell(row, col, sym);
+                if (rating > bestRating) {
+                    bestRating = rating;
+                    bestCells = [{row, col}];
+                } else if (rating === bestRating) {
+                    bestCells.push({row, col});
+                }
+            }
+        }
+        const randIndex = Math.floor(Math.random() * bestCells.length);
+        return {
+            row: bestCells[randIndex].row,
+            col: bestCells[randIndex].col,
+            rating: bestRating,
+        };
+    }
+
+    /**
+     *  Gets the rating for a given cell position representing most optimal next play position
+     *  for the given player symbol.
+     *  Does not take into account blocking an opponent, make sure to check for this if programming
+     *  the AI for a computer player or giving a player hint.
+     *  Assumes a valid row and column was given.
+     *  Safe to call if cell is occupied–it will efficiently return 0.
+     *  @param row {number} integer, representing the target row to check
+     *  @param col {number} integer, representing the target column to check
+     *  @param sym {Sym} the player to check for
+     *  @returns {number} the rating for the cell. Higher means greater optimization.
+     *  Compare with the others cells for optimal next move.
+     */
+    public rateCell(row: number, col: number, sym: Sym): number {
+        if (this.get(row, col) !== 0) // piece already here, non-viable position
+            return 0;
+
+        const cols = this.rows[0].length;
+        const rows = this.rows.length;
+
+        let rating = 0;
+
+        // check row
+        let temp = 0;
+        for (let i = 0; i < cols; ++i) {
+            const cur = i === col ? sym : this.get(row, i);
+
+            if (cur === sym) {       // own piece, increase viability
+                temp = (temp + 1) * cols;
+            } else if (cur !== 0) {  // opposing piece, bad row
+                temp = 0;
+                break;
+            }
+        }
+
+        rating += temp;
+
+        // check column
+        temp = 0;
+        for (let i = 0; i < rows; ++i) {
+            const cur = (i === row) ? sym : this.get(i, col);
+
+            if (cur === sym)       // own piece, increase viability
+                temp = (temp + 1) * rows;
+            else if (cur !== 0) {  // opposing piece, bad row
+                temp = 0;
+                break;
+            }
+        }
+
+        rating += temp;
+
+        // check diags
+
+        // currently do not support non-square grids
+        if (rows != cols) return rating;
+
+        // cell is in diag: top-left to bottom-right
+        if (row == col) {
+            temp = 0;
+            for (let i = 0; i < rows; ++i) {
+                const cur = i === row ? sym : this.get(i, i);
+
+                if (cur === sym) {
+                    temp = (temp + 1) * rows;
+                } else if (cur !== 0) {
+                    temp = 0;
+                    break;
+                }
+            }
+
+            rating += temp;
+        }
+
+        // cell is in diag: bottom-left to top-right
+        if (rows-1-row === col) {
+            temp = 0;
+            for (let i = 0; i < rows; ++i) {
+                const curRow = rows-1-i;
+                const cur = curRow === row && i === col ? sym : this.get(curRow, i);
+
+                if (cur === sym)
+                    temp = (temp + 1) * rows;
+                else if (cur !== 0) {
+                    temp = 0;
+                    break;
+                }
+            }
+
+            rating += temp;
+        }
+
+        return rating;
+    }
+
     /**
      * Check to see game win status.
      * @param sym {Sym?} optional: specific symbol to check for
@@ -160,4 +281,3 @@ export class Board {
         return true;
     }
 }
-
