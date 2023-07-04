@@ -171,7 +171,7 @@ export class GameController {
                 this.model.reset();
                 resetBtnEl.innerText = "Reset Game";
             }
-        }, 2000);
+        }, 1000);
     }
 
 
